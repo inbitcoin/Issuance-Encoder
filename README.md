@@ -1,5 +1,5 @@
 # Issuance-Encoder
-[![Build Status](https://travis-ci.org/Colored-Coins/Issuance-Encoder.svg?branch=master)](https://travis-ci.org/Colored-Coins/Issuance-Encoder) [![Coverage Status](https://coveralls.io/repos/Colored-Coins/Issuance-Encoder/badge.svg?branch=master)](https://coveralls.io/r/Colored-Coins/Issuance-Encoder?branch=master) [![npm version](https://badge.fury.io/js/cc-payment-encoder.svg)](http://badge.fury.io/js/cc-issuance-encoder)
+[![Build Status](https://travis-ci.org/Colored-Coins/Issuance-Encoder.svg?branch=master)](https://travis-ci.org/Colored-Coins/Issuance-Encoder) [![Coverage Status](https://coveralls.io/repos/Colored-Coins/Issuance-Encoder/badge.svg?branch=master)](https://coveralls.io/r/Colored-Coins/Issuance-Encoder?branch=master) [![npm version](https://badge.fury.io/js/cc-issuance-encoder.svg)](http://badge.fury.io/js/cc-issuance-encoder)
 
 Issuance-Encoder provides the encode/decode functions between a Colored Coins issuance Object to buffer
 
