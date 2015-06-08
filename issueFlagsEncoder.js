@@ -3,7 +3,9 @@ var padLeadingZeros = function (hex, byteSize) {
 }
 
 module.exports = {
-  encode: function (divisibility, lockStatus) {
+  encode: function (flags) {
+    var divisibility = flags.divisibility || 0
+    var lockStatus = flags.lockStatus || false
     if (divisibility < 0 || divisibility > 7) throw new Error('Divisibility not in range')
     var result = (divisibility * 2)
     var lockStatusFlag = 0

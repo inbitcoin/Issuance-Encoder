@@ -19,26 +19,28 @@ var consumer = function (buff) {
   }
 }
 
+var padLeadingZeros = function (hex, byteSize) {
+  return (hex.length === byteSize * 2) ? hex : padLeadingZeros('0' + hex, byteSize)
+}
+
 module.exports = {
   encode: function (data, byteSize) {
-    if (!data
-      || typeof data.amountOfUnits === 'undefined'
-      || typeof data.lockStatus === 'undefined'
-      || typeof data.divisibility === 'undefined'
-      || typeof data.protocol === 'undefined'
-      || typeof data.version === 'undefined'
-      ) {
-      throw new Error('Missing Data')
-    }
+    if (!data) throw new Error('Missing Data')
+    if (typeof data.amountOfUnits === 'undefined') throw new Error('Missing amountOfUnits')
+    if (typeof data.lockStatus === 'undefined') throw new Error('Missing lockStatus')
+    if (typeof data.divisibility === 'undefined') throw new Error('Missing divisibility')
+    if (typeof data.protocol === 'undefined') throw new Error('Missing protocol')
+    if (typeof data.version === 'undefined') throw new Error('Missing version')
     var opcode
     var hash = new Buffer(0)
-    var protocol = new Buffer(data.protocol.toString(16), 'hex')
-    var version = new Buffer(data.version.toString(16), 'hex')
+    var protocol = new Buffer(padLeadingZeros(data.protocol.toString(16), 2), 'hex')
+    var version = new Buffer([data.version])
     var issueHeader = Buffer.concat([protocol, version])
     var amountOfUnits = sffc.encode(data.amountOfUnits)
     var payments = new Buffer(0)
     if (data.payments) payments = paymentCodex.encodeBulk(data.payments)
-    var issueTail = Buffer.concat([amountOfUnits, payments, issueFlagsCodex.encode(data.divisibility, data.lockStatus)])
+    var issueFlagsByte = issueFlagsCodex.encode({divisibility: data.divisibility, lockStatus: data.lockStatus})
+    var issueTail = Buffer.concat([amountOfUnits, payments, issueFlagsByte])
     var issueByteSize = issueHeader.length + issueTail.length + 1
 
     if (issueByteSize > byteSize) throw new Error('Data code is bigger then the allowed byte size')
@@ -47,7 +49,7 @@ module.exports = {
         if (issueByteSize + data.torrentHash.length > byteSize) throw new Error('Can\'t fit Torrent Hash in byte size')
         return {codeBuffer: Buffer.concat([issueHeader, OP_CODES[4], data.torrentHash, issueTail]), leftover: []}
       }
-      opcode = data.allowMeta ? OP_CODES[6] : OP_CODES[5]
+      opcode = data.noRules ? OP_CODES[5] : OP_CODES[6]
       return {codeBuffer: Buffer.concat([issueHeader, opcode, hash, issueTail]), leftover: []}
     }
     if (!data.torrentHash) throw new Error('Torrent Hash is missing')
@@ -91,9 +93,9 @@ module.exports = {
     } else if (opcode.equals(OP_CODES[3])) {
     } else if (opcode.equals(OP_CODES[4])) {
     } else if (opcode.equals(OP_CODES[5])) {
-      data.allowMeta = false
+      data.noRules = true
     } else if (opcode.equals(OP_CODES[6])) {
-      data.allowMeta = true
+      data.noRules = false
     } else {
       throw new Error('Unrecognized Code')
     }

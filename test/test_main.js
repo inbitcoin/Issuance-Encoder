@@ -24,14 +24,14 @@ describe('Test Issuance decoder', function () {
       amountOfUnits: 1323200,
       divisibility: 3,
       lockStatus: false,
-      protocol: 0x1302, // Error when start with 0
-      version: 0x13
+      protocol: 0x0302, // Error when start with 0
+      version: 0x03
     }
     var result = ccEncoding.encode(data, 40)
     console.log(result.codeBuffer.toString('hex'), result.leftover)
     console.log(ccEncoding.decode(result.codeBuffer))
 
-    data.allowMeta = true
+    data.noRules = true
     result = ccEncoding.encode(data, 40)
     console.log(result.codeBuffer.toString('hex'), result.leftover)
     console.log(ccEncoding.decode(result.codeBuffer))
@@ -74,7 +74,7 @@ describe('Test Issuance decoder', function () {
     console.log(result.codeBuffer.toString('hex'), result.leftover)
     console.log(ccEncoding.decode(result.codeBuffer))
 
-    delete data.allowMeta
+    delete data.noRules
     data.payments = []
     data.payments.push({skip: false, range: false, precent: true, output: 12, amountOfUnits: 3213213})
     result = ccEncoding.encode(data, 80)
