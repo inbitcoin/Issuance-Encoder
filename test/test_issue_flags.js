@@ -33,6 +33,8 @@ describe('Test issue flags encoder', function () {
     for (var i = 0; i < testCase.length; i++) {
       var code = ccEncoding.encode(testCase[i])
       var decode = ccEncoding.decode(consumer(code))
+      console.log(testCase[i].lockStatus)
+      console.log(decode.lockStatus)
       assert.equal(testCase[i].divisibility, decode.divisibility, 'Divisibility encode has problems')
       assert.equal(testCase[i].lockStatus, decode.lockStatus, 'LockStatusk encode has problems')
     }

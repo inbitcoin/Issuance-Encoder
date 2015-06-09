@@ -19,7 +19,7 @@ module.exports = {
   decode: function (consume) {
     var number = consume(1)[0]
     number = (number / 16).toFixed(0)
-    var lockStatus = number & 1
+    var lockStatus = !!(number & 1)
     var divisibility = (number & (~1)) / 2
     return {divisibility: divisibility, lockStatus: lockStatus}
   }
