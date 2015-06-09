@@ -85,16 +85,16 @@ module.exports = {
     data.protocol = parseInt(consume(2).toString('hex'), 16)
     data.version = parseInt(consume(1).toString('hex'), 16)
     var opcode = consume(1)
-    if (opcode.equals(OP_CODES[1])) {
+    if (opcode[0] === OP_CODES[1][0]) {
       data.torrentHash = consume(20)
       data.sha2 = consume(32)
-    } else if (opcode.equals(OP_CODES[2])) {
+    } else if (opcode[0] === OP_CODES[2][0]) {
       data.torrentHash = consume(20)
-    } else if (opcode.equals(OP_CODES[3])) {
-    } else if (opcode.equals(OP_CODES[4])) {
-    } else if (opcode.equals(OP_CODES[5])) {
+    } else if (opcode[0] === OP_CODES[3][0]) {
+    } else if (opcode[0] === OP_CODES[4][0]) {
+    } else if (opcode[0] === OP_CODES[5][0]) {
       data.noRules = true
-    } else if (opcode.equals(OP_CODES[6])) {
+    } else if (opcode[0] === OP_CODES[6][0]) {
       data.noRules = false
     } else {
       throw new Error('Unrecognized Code')
