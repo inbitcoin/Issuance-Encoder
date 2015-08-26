@@ -9,7 +9,7 @@ var OP_CODES = [
 ]
 
 var sffc = require('sffc-encoder')
-var issueFlagsCodex = require(__dirname + '/issueFlagsEncoder')
+var issueFlagsCodex = require('./issueFlagsEncoder.js')
 var paymentCodex = require('cc-payment-encoder')
 
 var consumer = function (buff) {
