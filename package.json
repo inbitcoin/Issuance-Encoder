@@ -1,11 +1,11 @@
 {
   "name": "cc-issuance-encoder",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "The encoding/decoding functions for the colored-coins scheme issuance set of OP_CODES",
   "main": "issuanceEncoder.js",
   "dependencies": {
-    "sffc-encoder": "^0.1.6",
-    "cc-payment-encoder": "^0.1.2"
+    "sffc-encoder": "^0.1.8",
+    "cc-payment-encoder": "^0.1.3"
   },
   "directories": {
     "test": "test"
