@@ -1,6 +1,6 @@
 {
   "name": "cc-issuance-encoder",
-  "version": "0.3.4",
+  "version": "1.0.0",
   "description": "The encoding/decoding functions for the colored-coins scheme issuance set of OP_CODES",
   "main": "issuanceEncoder.js",
   "dependencies": {
