@@ -23,6 +23,11 @@ var padLeadingZeros = function (hex, byteSize) {
   return (hex.length === byteSize * 2) ? hex : padLeadingZeros('0' + hex, byteSize)
 }
 
+var decodeAmountByVersion = function (version, consume, divisibility) {
+  var decodedAmount = sffc.decode(consume)
+  return (version == 0x01)? (decodedAmount / Math.pow(10, divisibility)) : decodedAmount
+}
+
 module.exports = {
   encode: function (data, byteSize) {
     if (!data) throw new Error('Missing Data')
@@ -104,7 +109,7 @@ module.exports = {
       throw new Error('Unrecognized Code')
     }
 
-    data.amount = sffc.decode(consume)
+    data.amount = decodeAmountByVersion(data.version, consume, data.divisibility)
     data.payments = paymentCodex.decodeBulk(consume)
 
     return data
