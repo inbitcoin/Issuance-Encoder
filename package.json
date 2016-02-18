@@ -5,7 +5,7 @@
   "main": "issuanceEncoder.js",
   "dependencies": {
     "sffc-encoder": "^0.1.9",
-    "cc-payment-encoder": "^0.1.4"
+    "cc-payment-encoder": "^1.0.0"
   },
   "directories": {
     "test": "test"
