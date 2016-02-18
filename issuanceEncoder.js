@@ -26,7 +26,7 @@ var padLeadingZeros = function (hex, byteSize) {
 module.exports = {
   encode: function (data, byteSize) {
     if (!data) throw new Error('Missing Data')
-    if (typeof data.amountOfUnits === 'undefined') throw new Error('Missing amountOfUnits')
+    if (typeof data.amount === 'undefined') throw new Error('Missing amount')
     if (typeof data.lockStatus === 'undefined') throw new Error('Missing lockStatus')
     if (typeof data.divisibility === 'undefined') throw new Error('Missing divisibility')
     if (typeof data.protocol === 'undefined') throw new Error('Missing protocol')
@@ -36,11 +36,11 @@ module.exports = {
     var protocol = new Buffer(padLeadingZeros(data.protocol.toString(16), 2), 'hex')
     var version = new Buffer([data.version])
     var issueHeader = Buffer.concat([protocol, version])
-    var amountOfUnits = sffc.encode(data.amountOfUnits)
+    var amount = sffc.encode(data.amount)
     var payments = new Buffer(0)
     if (data.payments) payments = paymentCodex.encodeBulk(data.payments)
     var issueFlagsByte = issueFlagsCodex.encode({divisibility: data.divisibility, lockStatus: data.lockStatus})
-    var issueTail = Buffer.concat([amountOfUnits, payments, issueFlagsByte])
+    var issueTail = Buffer.concat([amount, payments, issueFlagsByte])
     var issueByteSize = issueHeader.length + issueTail.length + 1
 
     if (issueByteSize > byteSize) throw new Error('Data code is bigger then the allowed byte size')
@@ -104,7 +104,7 @@ module.exports = {
       throw new Error('Unrecognized Code')
     }
 
-    data.amountOfUnits = sffc.decode(consume)
+    data.amount = sffc.decode(consume)
     data.payments = paymentCodex.decodeBulk(consume)
 
     return data
