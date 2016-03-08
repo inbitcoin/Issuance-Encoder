@@ -101,6 +101,7 @@ module.exports = {
       data.multiSig.push({'index': 1, 'hashType': 'sha2'})
       data.multiSig.push({'index': 2, 'hashType': 'torrentHash'})
     } else if (opcode[0] === OP_CODES[4][0]) {
+      data.torrentHash = consume(20)
     } else if (opcode[0] === OP_CODES[5][0]) {
       data.noRules = true
     } else if (opcode[0] === OP_CODES[6][0]) {
