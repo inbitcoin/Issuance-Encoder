@@ -207,17 +207,36 @@ describe('80 byte OP_RETURN', function() {
     assert.deepEqual(code.leftover[0], sha2)
     assert.deepEqual(decoded.torrentHash, torrentHash)
 
-    data.torrentHash = torrentHash
+    //had 1 too many bytes to keep SHA2 in 80 byte.
+    //this means that we can push up to 31 more bytes to stay with the same OP_CODE (here we push 2 per instruction)
+    for (var i = 0 ; i < 15 ; i++) {
+      data.payments.push({skip: false, range: false, percent: false, output: 1, amount: 1})
+    }
+
+    code = ccEncoding.encode(data, 80)
+    console.log(code.codeBuffer.toString('hex'), code.leftover)
+
+    consume = consumer(code.codeBuffer.slice(0, code.codeBuffer.length))
+    assert.deepEqual(toBuffer('4343'), consume(2))
+    assert.deepEqual(toBuffer('02'), consume(1))  //version
+    assert.deepEqual(toBuffer('02'), consume(1))  //issuance OP_CODE
+
+    decoded = ccEncoding.decode(code.codeBuffer)
+    console.log(decoded)
+    assert.equal(decoded.multiSig.length, 1)
+    assert.equal(decoded.multiSig.length, code.leftover.length)
+    assert.deepEqual(decoded.multiSig[0], { hashType: 'sha2', index: 1 })
+    assert.deepEqual(code.leftover[0], sha2)
+    assert.deepEqual(decoded.torrentHash, torrentHash)
+
     done()
   })
 
   it('Issuance OP_CODE 0x03 - SHA1 Torrent Hash + SHA256 of metadata in 1(3) multisig', function (done) {
     this.timeout(0)
 
-    //20 more bytes for transfer instructions - push torrent hash out
-    for (var i = 0 ; i < 20 ; i++) {
-      data.payments.push({skip: false, range: false, percent: false, output: 1, amount: 1})
-    }
+    //we reached limit in previous test, 1 more transfer instruction (2 bytes) should push torrent-hash out.
+    data.payments.push({skip: false, range: false, percent: false, output: 1, amount: 1})
 
     data.torrentHash = torrentHash
     data.sha2 = sha2
