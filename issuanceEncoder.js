@@ -34,6 +34,7 @@ module.exports = {
     if (typeof data.amount === 'undefined') throw new Error('Missing amount')
     if (typeof data.lockStatus === 'undefined') throw new Error('Missing lockStatus')
     if (typeof data.divisibility === 'undefined') throw new Error('Missing divisibility')
+    if (typeof data.aggregationPolicy === 'undefined') throw new Error('Missing aggregationPolicy')
     if (typeof data.protocol === 'undefined') throw new Error('Missing protocol')
     if (typeof data.version === 'undefined') throw new Error('Missing version')
     var opcode
@@ -44,7 +45,7 @@ module.exports = {
     var amount = sffc.encode(data.amount)
     var payments = new Buffer(0)
     if (data.payments) payments = paymentCodex.encodeBulk(data.payments)
-    var issueFlagsByte = issueFlagsCodex.encode({divisibility: data.divisibility, lockStatus: data.lockStatus})
+    var issueFlagsByte = issueFlagsCodex.encode({divisibility: data.divisibility, lockStatus: data.lockStatus, aggregationPolicy: data.aggregationPolicy})
     var issueTail = Buffer.concat([amount, payments, issueFlagsByte])
     var issueByteSize = issueHeader.length + issueTail.length + 1
 
@@ -86,6 +87,7 @@ module.exports = {
     var issueTail = issueFlagsCodex.decode(consumer(lastByte))
     data.divisibility = issueTail.divisibility
     data.lockStatus = issueTail.lockStatus
+    data.aggregationPolicy = issueTail.aggregationPolicy
     var consume = consumer(op_code_buffer.slice(0, byteSize - 1))
     data.protocol = parseInt(consume(2).toString('hex'), 16)
     data.version = parseInt(consume(1).toString('hex'), 16)

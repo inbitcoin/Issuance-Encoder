@@ -29,6 +29,7 @@ describe('80 byte OP_RETURN', function() {
     protocol: 0x4343, // Error when start with 0
     version: 0x02,
     lockStatus: true,
+    aggregationPolicy: 'aggregatable',
     payments: []
   }
   data.payments.push({skip: false, range: false, percent: false, output: 1, amount: 15})

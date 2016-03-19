@@ -12,47 +12,80 @@ describe('Test issue flags encoder', function () {
   it('should return the right decoding', function (done) {
     this.timeout(0)
     var testCase = [
-      {divisibility: 0, lockStatus: false},
-      {divisibility: 1, lockStatus: false},
-      {divisibility: 2, lockStatus: false},
-      {divisibility: 3, lockStatus: false},
-      {divisibility: 4, lockStatus: false},
-      {divisibility: 5, lockStatus: false},
-      {divisibility: 6, lockStatus: false},
-      {divisibility: 7, lockStatus: false},
-      {divisibility: 0, lockStatus: true},
-      {divisibility: 1, lockStatus: true},
-      {divisibility: 2, lockStatus: true},
-      {divisibility: 3, lockStatus: true},
-      {divisibility: 4, lockStatus: true},
-      {divisibility: 5, lockStatus: true},
-      {divisibility: 6, lockStatus: true},
-      {divisibility: 7, lockStatus: true}
+      {divisibility: 0, lockStatus: false, aggregationPolicy: 'aggregatable'},
+      {divisibility: 1, lockStatus: false, aggregationPolicy: 'aggregatable'},
+      {divisibility: 2, lockStatus: false, aggregationPolicy: 'aggregatable'},
+      {divisibility: 3, lockStatus: false, aggregationPolicy: 'aggregatable'},
+      {divisibility: 4, lockStatus: false, aggregationPolicy: 'aggregatable'},
+      {divisibility: 5, lockStatus: false, aggregationPolicy: 'aggregatable'},
+      {divisibility: 6, lockStatus: false, aggregationPolicy: 'aggregatable'},
+      {divisibility: 7, lockStatus: false, aggregationPolicy: 'aggregatable'},
+      {divisibility: 0, lockStatus: true, aggregationPolicy: 'aggregatable'},
+      {divisibility: 1, lockStatus: true, aggregationPolicy: 'aggregatable'},
+      {divisibility: 2, lockStatus: true, aggregationPolicy: 'aggregatable'},
+      {divisibility: 3, lockStatus: true, aggregationPolicy: 'aggregatable'},
+      {divisibility: 4, lockStatus: true, aggregationPolicy: 'aggregatable'},
+      {divisibility: 5, lockStatus: true, aggregationPolicy: 'aggregatable'},
+      {divisibility: 6, lockStatus: true, aggregationPolicy: 'aggregatable'},
+      {divisibility: 7, lockStatus: true, aggregationPolicy: 'aggregatable'},
+
+      {divisibility: 0, lockStatus: false, aggregationPolicy: 'hybrid'},
+      {divisibility: 1, lockStatus: false, aggregationPolicy: 'hybrid'},
+      {divisibility: 2, lockStatus: false, aggregationPolicy: 'hybrid'},
+      {divisibility: 3, lockStatus: false, aggregationPolicy: 'hybrid'},
+      {divisibility: 4, lockStatus: false, aggregationPolicy: 'hybrid'},
+      {divisibility: 5, lockStatus: false, aggregationPolicy: 'hybrid'},
+      {divisibility: 6, lockStatus: false, aggregationPolicy: 'hybrid'},
+      {divisibility: 7, lockStatus: false, aggregationPolicy: 'hybrid'},
+      {divisibility: 0, lockStatus: true, aggregationPolicy: 'hybrid'},
+      {divisibility: 1, lockStatus: true, aggregationPolicy: 'hybrid'},
+      {divisibility: 2, lockStatus: true, aggregationPolicy: 'hybrid'},
+      {divisibility: 3, lockStatus: true, aggregationPolicy: 'hybrid'},
+      {divisibility: 4, lockStatus: true, aggregationPolicy: 'hybrid'},
+      {divisibility: 5, lockStatus: true, aggregationPolicy: 'hybrid'},
+      {divisibility: 6, lockStatus: true, aggregationPolicy: 'hybrid'},
+      {divisibility: 7, lockStatus: true, aggregationPolicy: 'hybrid'},
+
+      {divisibility: 0, lockStatus: false, aggregationPolicy: 'dispersed'},
+      {divisibility: 1, lockStatus: false, aggregationPolicy: 'dispersed'},
+      {divisibility: 2, lockStatus: false, aggregationPolicy: 'dispersed'},
+      {divisibility: 3, lockStatus: false, aggregationPolicy: 'dispersed'},
+      {divisibility: 4, lockStatus: false, aggregationPolicy: 'dispersed'},
+      {divisibility: 5, lockStatus: false, aggregationPolicy: 'dispersed'},
+      {divisibility: 6, lockStatus: false, aggregationPolicy: 'dispersed'},
+      {divisibility: 7, lockStatus: false, aggregationPolicy: 'dispersed'},
+      {divisibility: 0, lockStatus: true, aggregationPolicy: 'dispersed'},
+      {divisibility: 1, lockStatus: true, aggregationPolicy: 'dispersed'},
+      {divisibility: 2, lockStatus: true, aggregationPolicy: 'dispersed'},
+      {divisibility: 3, lockStatus: true, aggregationPolicy: 'dispersed'},
+      {divisibility: 4, lockStatus: true, aggregationPolicy: 'dispersed'},
+      {divisibility: 5, lockStatus: true, aggregationPolicy: 'dispersed'},
+      {divisibility: 6, lockStatus: true, aggregationPolicy: 'dispersed'},
+      {divisibility: 7, lockStatus: true, aggregationPolicy: 'dispersed'}
     ]
 
     for (var i = 0; i < testCase.length; i++) {
       var code = ccEncoding.encode(testCase[i])
       var decode = ccEncoding.decode(consumer(code))
-      console.log(testCase[i].lockStatus)
-      console.log(decode.lockStatus)
-      assert.equal(testCase[i].divisibility, decode.divisibility, 'Divisibility encode has problems')
-      assert.equal(testCase[i].lockStatus, decode.lockStatus, 'LockStatusk encode has problems')
+      assert.equal(decode.divisibility, testCase[i].divisibility, 'Divisibility encode has problems')
+      assert.equal(decode.lockStatus, testCase[i].lockStatus, 'LockStatus encode has problems')
+      assert.equal(decode.aggregationPolicy, testCase[i].aggregationPolicy, 'Aggregate policy has problems')
     }
 
     done()
   })
 
-  it('should fail for wrong input', function (done) {
+  it('should fail for wrong divisibility', function (done) {
     this.timeout(0)
     var testCase = [
-      {divisibility: 8, lockStatus: true},
-      {divisibility: 8, lockStatus: false},
-      {divisibility: 82, lockStatus: true},
-      {divisibility: 21, lockStatus: false},
-      {divisibility: -8, lockStatus: true},
-      {divisibility: 0xff, lockStatus: false},
-      {divisibility: 1000, lockStatus: true},
-      {divisibility: -1, lockStatus: false}
+      {divisibility: 8, lockStatus: true, aggregationPolicy: 'aggregatable'},
+      {divisibility: 8, lockStatus: false, aggregationPolicy: 'aggregatable'},
+      {divisibility: 82, lockStatus: true, aggregationPolicy: 'aggregatable'},
+      {divisibility: 21, lockStatus: false, aggregationPolicy: 'aggregatable'},
+      {divisibility: -8, lockStatus: true, aggregationPolicy: 'aggregatable'},
+      {divisibility: 0xff, lockStatus: false, aggregationPolicy: 'aggregatable'},
+      {divisibility: 1000, lockStatus: true, aggregationPolicy: 'aggregatable'},
+      {divisibility: -1, lockStatus: false, aggregationPolicy: 'aggregatable'}
     ]
 
     for (var i = 0; i < testCase.length; i++) {
@@ -60,6 +93,27 @@ describe('Test issue flags encoder', function () {
         ccEncoding.encode(testCase[i])
       }, 'Divisibility not in range'
       , 'Wrong fail')
+    }
+
+    done()
+  })
+
+  it('should fail for invalid aggregation policy', function (done) {
+    this.timeout(0)
+    var testCase = [
+      //aggregatable typos are on purpose...
+      {divisibility: 2, lockStatus: false, aggregationPolicy: 1},
+      {divisibility: 3, lockStatus: true, aggregationPolicy: 2},
+      {divisibility: 4, lockStatus: false, aggregationPolicy: 'AGGREGATABL'},
+      {divisibility: 5, lockStatus: true, aggregationPolicy: 'aggregat'}
+    ]
+
+    for (var i = 0; i < testCase.length; i++) {
+      assert.throws(function () {
+        ccEncoding.encode(testCase[i])
+      }, 
+      /Invalid aggregation policy/,
+      'Wrong fail')
     }
 
     done()
