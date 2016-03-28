@@ -28,7 +28,7 @@ module.exports = {
 
   decode: function (consume) {
     var number = consume(1)[0]
-    number = number >> 2
+    number = number >> 2  // least significant 2 bits unused
     var aggregationPolicy = aggregationPolicies[number & 0x3]
     number = number >> 2
     var lockStatus = !!(number & 1)
