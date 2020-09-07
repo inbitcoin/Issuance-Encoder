@@ -5,7 +5,7 @@
   "main": "issuanceEncoder.js",
   "dependencies": {
     "sffc-encoder": "^0.1.12",
-    "cc-payment-encoder": "^1.0.0"
+    "cc-payment-encoder": "git://github.com/inbitcoin/Payment-Encoder.git#v1.0.2"
   },
   "devDependencies": {
     "mocha": "^8.1.3",
